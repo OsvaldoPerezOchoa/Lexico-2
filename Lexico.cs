@@ -95,6 +95,10 @@ namespace Lexico_2
                     {
                         sigEstado = 32;
                     }
+                    else if(transicion == '/')
+                    {
+                        sigEstado = 34;
+                    }
                     else
                     {
                         sigEstado = 33;
@@ -380,8 +384,30 @@ namespace Lexico_2
                     sigEstado = F;
                     break;
                 case 34:
+                    setClasificacion(Tipos.opFactor);
+                    if(transicion == '/')
+                    {
+                        sigEstado = 36;
+                    }
+                    else if(transicion == '=')
+                    {
+                        sigEstado = 35;
+                    }else if(transicion == '*')
+                    {
+                        sigEstado = 37;
+                    }
+                    else
+                    {
+                        sigEstado = F;
+                    }
+                    break;
                 case 35:
+                    setClasificacion(Tipos.incFactor);
+                    sigEstado = F;
+                    break;
                 case 36:
+                    
+                    break;
                 case 37:
                 case 38:
                 case 39:
