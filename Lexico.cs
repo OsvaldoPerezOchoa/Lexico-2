@@ -83,6 +83,14 @@ namespace Lexico_2
                     {
                         sigEstado = 27;
                     }
+                    else if(transicion == '"')
+                    {
+                        sigEstado = 29;
+                    }
+                    else if(transicion == '\'')
+                    {
+                        sigEstado = 30;
+                    }
                     else if(transicion == '?')
                     {
                         sigEstado = 32;
@@ -332,8 +340,37 @@ namespace Lexico_2
                     sigEstado = F;
                     break;
                 case 29:
+                    if(char.IsLetter(transicion))
+                    {
+                        sigEstado = 29;
+                    }
+                    else if(transicion == '"')
+                    {
+                        sigEstado = 31;
+                    }
+                    else
+                    {
+                        sigEstado = E;
+                    }
+                    break;
                 case 30:
-                case 31:                
+                    if(char.IsLetter(transicion))
+                    {
+                        sigEstado = 29;
+                    }
+                    else if(transicion == '\'')
+                    {
+                        sigEstado = 31;
+                    }
+                    else
+                    {
+                        sigEstado = E;
+                    }
+                    break;
+                case 31:
+                    setClasificacion(Tipos.Cadena);
+                    sigEstado = F;
+                    break;                
                 case 32:
                     setClasificacion(Tipos.ternario);
                     sigEstado = F;
