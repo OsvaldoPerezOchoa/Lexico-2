@@ -143,6 +143,7 @@ namespace Lexico_2
                     else
                     {
                         sigEstado = E;
+                       
                     }
                     break;
                 case 4:
@@ -350,7 +351,7 @@ namespace Lexico_2
                     }
                     else if(FinArchivo())
                     {
-                        sigEstado = E;                      
+                        sigEstado = E;                     
                     }
                     break;
                 case 30:
@@ -405,9 +406,6 @@ namespace Lexico_2
                 case 39:
                 break;
             }
-
-
-
             return sigEstado;
         }
         public void NextToken()
@@ -428,6 +426,12 @@ namespace Lexico_2
                         Buffer+=c;
                     }
                 }
+            }
+            if(Estado == E)
+            {
+                //levantar excepcion correspondiente
+                log.WriteLine("ERROR LEXICO");
+                Console.WriteLine("ERROR LEXICO");
             }
 
             setContenido(Buffer);
