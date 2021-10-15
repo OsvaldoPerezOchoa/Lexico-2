@@ -20,7 +20,7 @@ namespace Lexico_2
             log.WriteLine("-----------------------------------");
             log.WriteLine("Contenido de Hola.txt: ");
         }
-
+        
         public int Automata(int EstadoActual,char transicion)
         {
             int sigEstado=EstadoActual;
@@ -399,7 +399,14 @@ namespace Lexico_2
                     sigEstado = F;
                     break;
                 case 36:
-                    
+                    if(transicion != '\n')
+                    {
+                        sigEstado = 36;
+                    }
+                    else
+                    {
+                        sigEstado = 0;
+                    }
                     break;
                 case 37:
                 case 38:
@@ -467,7 +474,8 @@ namespace Lexico_2
             }
             if(!FinArchivo())
             {
-                log.WriteLine(getContenido()+" = "+getClasificacion()); 
+                log.WriteLine(getContenido()+" = "+getClasificacion());
+
             }             
         }
         public bool FinArchivo()
