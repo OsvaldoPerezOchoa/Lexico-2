@@ -6,8 +6,8 @@ namespace Lexico_2
     public class Lexico:token
     {
 
-        const int E=-1;//negativo por si crece el automata
-        const int F=-2;       
+        const int E=-2;//negativo por si crece el automata
+        const int F=-1;       
         StreamReader archivo;
         StreamWriter log;
         public Lexico()
@@ -23,7 +23,7 @@ namespace Lexico_2
 
         public int Automata(int EstadoActual,char transicion)
         {
-            int sigEstado=0;
+            int sigEstado=EstadoActual;
             switch(EstadoActual)
             {
                 case 0:
@@ -35,50 +35,309 @@ namespace Lexico_2
                     {
                         sigEstado=1;
                     }
+                    else if(char.IsDigit(transicion))
+                    {
+                        sigEstado=2;
+                    }
+                    else if(transicion == '=')
+                    {
+                        sigEstado=8;
+                    }
+                    else if(transicion == ':')
+                    {
+                        sigEstado = 10;
+                    }
+                    else if (transicion == ';')
+                    {
+                        sigEstado = 12;
+                    }
+                    else if(transicion == '&')
+                    {
+                        sigEstado = 13;
+                    }
+                    else if(transicion == '|')
+                    {
+                        sigEstado = 14;
+                    }
+                    else if(transicion == '!')
+                    {
+                        sigEstado = 15;
+                    }
+                    else if(transicion == '>')
+                    {
+                        sigEstado = 19;
+                    }
+                    else if(transicion == '<')
+                    {
+                        sigEstado = 20;
+                    }
+                    else if(transicion == '+')
+                    {
+                        sigEstado = 23;
+                    }
+                    else if(transicion == '-')
+                    {
+                        sigEstado = 24;
+                    }
+                    else if(transicion == '%' ||transicion == '*')
+                    {
+                        sigEstado = 27;
+                    }
+                    else if(transicion == '?')
+                    {
+                        sigEstado = 32;
+                    }
                     else
                     {
-                        sigEstado =33;
+                        sigEstado = 33;
                     }
                     break;
                 case 1:
                     setClasificacion(Tipos.identificador);
-                    if(!char.IsLetterOrDigit(transicion))
+                    if(char.IsLetterOrDigit(transicion))
+                    {
+                        sigEstado = 1;
+                    }
+                    else
                     {
                         sigEstado = F;
                     }
                     break;
 
                 case 2:
+                    setClasificacion(Tipos.numero);
+                    if(char.IsDigit(transicion))
+                    {
+                        sigEstado = 2;
+                    }
+                    else if (transicion == '.')
+                    {
+                        sigEstado = 3;
+                    }
+                    else if(transicion == 'e' || transicion == 'E')
+                    {
+                        sigEstado = 5;
+                    }
+                    else
+                    {
+                        sigEstado = F;
+                    }
+                    break;
                 case 3:
+                    if(char.IsDigit(transicion))
+                    {
+                        sigEstado = 4;
+                    }
+                    else
+                    {
+                        sigEstado = E;
+                    }
+                    break;
                 case 4:
+                    if(char.IsDigit(transicion))
+                    {
+                        sigEstado = 4;
+                    }
+                    else if(transicion == 'e' || transicion == 'E')
+                    {
+                        sigEstado = 5;
+                    }
+                    else
+                    {
+                        sigEstado = F;
+                    }
+                    break;
                 case 5:
+                    if(transicion == '+' || transicion == '-')
+                    {
+                        sigEstado = 6;
+                    }
+                    else if(char.IsDigit(transicion))
+                    {
+                        sigEstado = 7;
+                    }
+                    else
+                    {
+                        sigEstado = E;
+                    }
+                    break;
                 case 6:
+                    if(char.IsDigit(transicion))
+                    {
+                        sigEstado = 7;
+                    }
+                    else
+                    {
+                        sigEstado = E;
+                    }
+                    break;
                 case 7:
+                    if(!char.IsDigit(transicion))
+                    {
+                        sigEstado = F;
+                    }
+                    break;
                 case 8:
+                    setClasificacion(Tipos.asignacion);
+                    if(transicion == '=')
+                    {
+                        sigEstado = 9;
+                    }
+                    else
+                    {
+                        sigEstado = F;
+                    }
+                    break;
                 case 9:
+                    setClasificacion(Tipos.opRelacional);
+                    sigEstado = F;
+                    break;
                 case 10:
+                    setClasificacion(Tipos.caracter);
+                    if(transicion == '=')
+                    {
+                        sigEstado = 11;
+                    }
+                    else
+                    {
+                        sigEstado = F;
+                    }
+                    break;
                 case 11:
+                    setClasificacion(Tipos.inicializacion);
+                    sigEstado = F;
+                    break;
                 case 12:
+                    setClasificacion(Tipos.finSentencia);
+                    sigEstado = F;
+                    break;
                 case 13:
+                    setClasificacion(Tipos.caracter);
+                    if(transicion == '&')
+                    {
+                        sigEstado = 16;
+                    }
+                    else
+                    {
+                        sigEstado = F;
+                    }
+                    break;
                 case 14:
+                    setClasificacion(Tipos.caracter);
+                    if(transicion == '|')
+                    {
+                        sigEstado = 17;
+                    }
+                    else
+                    {
+                        sigEstado = F;
+                    }
+                    break;
                 case 15:
+                    setClasificacion(Tipos.caracter);
+                    if(transicion == '=')
+                    {
+                        sigEstado = 18;
+                    }
+                    else
+                    {
+                        sigEstado = F;
+                    }
+                    break;
                 case 16:
+                    setClasificacion(Tipos.opLogico);
+                    sigEstado = F;
+                    break;
                 case 17:
+                    setClasificacion(Tipos.opLogico);
+                    sigEstado = F;
+                    break;
                 case 18:
+                    setClasificacion(Tipos.opRelacional);
+                    sigEstado = F;
+                    break;
                 case 19:
+                    setClasificacion(Tipos.opRelacional);
+                    if(transicion == '=')
+                    {
+                        sigEstado = 21;
+                    }
+                    else
+                    {
+                        sigEstado = F;
+                    }
+                    break;
                 case 20:
+                    setClasificacion(Tipos.opRelacional);
+                    if(transicion == '=' ||transicion == '>')
+                    {
+                        sigEstado = 22;
+                    }
+                    else
+                    {
+                        sigEstado = F;
+                    }
+                    break;
                 case 21:
+                    setClasificacion(Tipos.opRelacional);
+                    sigEstado = F;
+                    break;
                 case 22:
+                    setClasificacion(Tipos.opRelacional);
+                    sigEstado = F;
+                    break;
                 case 23:
+                    setClasificacion(Tipos.opTermino);
+                    if(transicion == '+'|| transicion == '=')
+                    {
+                        sigEstado = 25;
+                    }
+                    else
+                    {
+                        sigEstado = F;
+                    }
+                    break;
                 case 24:
+                    setClasificacion(Tipos.opTermino);
+                    if(transicion == '-'|| transicion == '=')
+                    {
+                        sigEstado = 26;
+                    }
+                    else
+                    {
+                        sigEstado = F;
+                    }
+                    break;
                 case 25:
+                    setClasificacion(Tipos.incTermino);
+                    sigEstado = F;
+                    break;
                 case 26:
+                    setClasificacion(Tipos.incTermino);
+                    sigEstado = F;
+                    break;
                 case 27:
+                    setClasificacion(Tipos.opFactor);
+                    if(transicion == '=')
+                    {
+                        sigEstado = 28;
+                    }
+                    else
+                    {
+                        sigEstado = F;
+                    }
+                    break;
                 case 28:
+                    setClasificacion(Tipos.incFactor);
+                    sigEstado = F;
+                    break;
                 case 29:
                 case 30:
-                case 31:
+                case 31:                
                 case 32:
+                    setClasificacion(Tipos.ternario);
+                    sigEstado = F;
+                    break;
                 case 33:
                     setClasificacion(Tipos.caracter);
                     sigEstado = F;
