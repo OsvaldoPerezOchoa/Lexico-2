@@ -344,29 +344,21 @@ namespace Lexico_2
                     sigEstado = F;
                     break;
                 case 29:
-                    if(char.IsLetter(transicion))
-                    {
-                        sigEstado = 29;
-                    }
-                    else if(transicion == '"')
+                    if(transicion == '"')
                     {
                         sigEstado = 31;
                     }
-                    else
+                    else if(FinArchivo())
                     {
-                        sigEstado = E;
+                        sigEstado = E;                      
                     }
                     break;
                 case 30:
-                    if(char.IsLetter(transicion))
-                    {
-                        sigEstado = 29;
-                    }
-                    else if(transicion == '\'')
+                    if(transicion == '\'')
                     {
                         sigEstado = 31;
                     }
-                    else
+                    else if(FinArchivo())
                     {
                         sigEstado = E;
                     }
