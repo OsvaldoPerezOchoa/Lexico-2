@@ -367,6 +367,10 @@ namespace Lexico_2
                     {
                         sigEstado = E;
                     }
+                    else
+                    {
+                        sigEstado = 30;
+                    }
                     break;
                 case 31:
                     setClasificacion(Tipos.Cadena);
