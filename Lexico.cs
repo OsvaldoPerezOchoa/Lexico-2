@@ -247,7 +247,7 @@ namespace Lexico_2
                     }
                     break;
                 case 15:
-                    setClasificacion(Tipos.caracter);
+                    setClasificacion(Tipos.opLogico);
                     if(transicion == '=')
                     {
                         sigEstado = 18;
@@ -353,6 +353,10 @@ namespace Lexico_2
                     {
                         sigEstado = E;                     
                     }
+                    else
+                    {
+                        sigEstado = 29;
+                    }
                     break;
                 case 30:
                     if(transicion == '\'')
@@ -401,17 +405,45 @@ namespace Lexico_2
                 case 36:
                     if(transicion != '\n')
                     {
-                        sigEstado = 36;
+                        sigEstado = 36;                       
                     }
                     else
                     {
-                        sigEstado = 0;
+                        sigEstado = 0;   
                     }
                     break;
                 case 37:
+                    if(transicion == '*')
+                    {
+                        sigEstado = 38;
+                    }
+                    else if(FinArchivo())
+                    {
+                        sigEstado = E;
+                    }
+                    else
+                    {
+                        sigEstado = 37;
+                    }
+                    break;
                 case 38:
-                case 39:
-                break;
+                    if(transicion == '/')
+                    {
+                        sigEstado = 0;
+                    }
+                    else if(transicion == '*')
+                    {
+                        sigEstado = 38;
+                    }
+                    else if(FinArchivo())
+                    {
+                        sigEstado = E;
+                    }
+                    else
+                    {
+                        sigEstado = 37;
+                    }
+                    break;
             }
             return sigEstado;
         }
@@ -432,13 +464,26 @@ namespace Lexico_2
                     {
                         Buffer+=c;
                     }
+                    else
+                    {
+                        Buffer = "";//estado 0 limpia buffer
+                    }
                 }
             }
             if(Estado == E)
             {
-                //levantar excepcion correspondiente
-                log.WriteLine("ERROR LEXICO");
-                Console.WriteLine("ERROR LEXICO");
+                if(Buffer [0] == '"' || Buffer [0] == '\'')
+                {
+                    //levantar excepcion correspondiente
+                    log.WriteLine("ERROR LEXICO: No se cerro la cadena");
+                    Console.WriteLine("ERROR LEXICO: No se cerro la cadena");
+                    
+                }
+                else if(char.IsDigit(Buffer [0]))
+                {
+                    log.WriteLine("ERROR LEXICO: Se espera un digito");
+                    Console.WriteLine("ERROR LEXICO: Se espera un digito");
+                }               
             }
 
             setContenido(Buffer);
